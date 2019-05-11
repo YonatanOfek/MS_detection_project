@@ -1,6 +1,7 @@
 import numpy as np
 import matplotlib as mpl
 
+
 def ReLU(x):
     return abs(x)*(x > 0)
 
@@ -8,24 +9,31 @@ def ReLU(x):
 def sigmoid(x):
     return 1.0 / (1.0 + np.exp(-x))
 
+
 def sigmoid_derivative(x):
-    return 1.0 / (2.0 + np.exp(-2.0 *x) + 2.0 * np.exp(-x))
+    return 1.0 / (2.0 + np.exp(-2.0 *x) + 2.0 * np.exp(-x))  # ??
+
 
 def relu_derivative(x):
-    return 1.0 * (x > 0)
+    return 1.0 * (x > 0)  # ??
+
 
 def calculate_accuracy(prob, label):
-    return
+    return prob - label  # ??
+
 
 def calculate_accuracy_mean(accuracy, batch_size):
-    return
+    return accuracy / batch_size  # ??
+
 
 def calculate_loss(loss, batch_size):
-    return
+    return loss / batch_size  # ??
+
 
 class TrainingExperiment:
+    pass
+    # def __init__(self, net, number_of_epochs, size_of_batches, input_vector, label_vector):
 
-    def __init__(self, net, number_of_epochs, size_of_batches, input_vector, label_vector):
 
 class NeuralNet:
 
@@ -40,7 +48,6 @@ class NeuralNet:
         b2 = np.zeros((1, nn_output_dim))
         self.weights = [w1, w2]
         self.biases = [b1, b2]
-
 
     def back_propagtion(self, image, label):
 
@@ -62,12 +69,12 @@ class NeuralNet:
 
         dw2 = a1.T.dot(delta3)
         dw1 = curr_input.T.dot(delta2)
-        d_nabla_b = [delta2,delta3]
+        d_nabla_b = [delta2, delta3]
         d_nabla_w = [dw1, dw2]
 
         return d_nabla_b, d_nabla_w, prob_bp
 
-    def update_batch(self, lr, batch_size):
+    def update_batch(self, batch, lr, batch_size):
         nabla_w = [np.zeros(w.shape) for w in self.weights]
         nabla_b = [np.zeros(b.shape) for b in self.biases]
         loss = []
