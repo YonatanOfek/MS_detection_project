@@ -1,5 +1,6 @@
 import numpy as np
 import matplotlib as mpl
+import cv2 as cv
 
 
 def ReLU(x):
@@ -11,7 +12,7 @@ def sigmoid(x):
 
 
 def sigmoid_derivative(x):
-    return 1.0 / (2.0 + np.exp(-2.0 *x) + 2.0 * np.exp(-x))  # ??
+    return 1.0 / (2.0 + np.exp(-2.0 * x) + 2.0 * np.exp(-x))  # ??
 
 
 def relu_derivative(x):
@@ -30,10 +31,13 @@ def calculate_loss(loss, batch_size):
     return loss / batch_size  # ??
 
 
-class TrainingExperiment:
-    pass
-    # def __init__(self, net, number_of_epochs, size_of_batches, input_vector, label_vector):
+class TrainingExperiment():
 
+    # def __init__(self, net: NeuralNet, number_of_epochs, size_of_batches, input_vector, label_vector):
+    #     self.NN = net
+    #     pass
+    # def epoch(self):
+    #
 
 class NeuralNet:
 
@@ -49,7 +53,7 @@ class NeuralNet:
         self.weights = [w1, w2]
         self.biases = [b1, b2]
 
-    def back_propagtion(self, image, label):
+    def back_propagation(self, image, label):
 
         # create input vector
         curr_input = image
@@ -81,7 +85,7 @@ class NeuralNet:
         accuracy = []
 
         for image, label in batch:
-            db, dw, prob = self.back_propagtion(image, label)
+            db, dw, prob = self.back_propagation(image, label)
             nabla_w = [nw + dnw for nw, dnw in zip(nabla_w, dw)]
             nabla_b = [nb + dnb for nb, dnb in zip(nabla_b, db)]
             loss.append((label - prob) ** 2 / 2)
@@ -95,7 +99,12 @@ class NeuralNet:
         return mean_loss, mean_accuracy
 
 
+
 if __name__ == '__main__':
-    net1 = NeuralNet(3)
-    trained_net1 = TrainingExperiment(net)
-    mpl.rc_plot(trained_net1.plot)
+    net1 = NeuralNet(1)
+    training_pictures = # cv.imread(raw_img, 0)
+    for i in range(30):
+        mean_loss(i), mean_accuracy(i)= net1.update_batch(training_pictures, 1, len(training_pictures))
+
+    mpl.rc_plot(mean_accuracy)
+    mpl.rc_plot(mean_loss)
