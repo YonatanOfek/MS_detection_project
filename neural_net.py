@@ -1,6 +1,5 @@
 import numpy as np
-
-
+import matplotlib as mpl
 
 def ReLU(x):
     return abs(x)*(x > 0)
@@ -9,10 +8,28 @@ def ReLU(x):
 def sigmoid(x):
     return 1.0 / (1.0 + np.exp(-x))
 
+def sigmoid_derivative(x):
+    return 1.0 / (2.0 + np.exp(-2.0 *x) + 2.0 * np.exp(-x))
+
+def relu_derivative(x):
+    return 1.0 * (x > 0)
+
+def calculate_accuracy(prob, label):
+    return
+
+def calculate_accuracy_mean(accuracy, batch_size):
+    return
+
+def calculate_loss(loss, batch_size):
+    return
+
+class TrainingExperiment:
+
+    def __init__(self, net, number_of_epochs, size_of_batches, input_vector, label_vector):
 
 class NeuralNet:
 
-    def __index__(self, nn_hdim):
+    def __init__(self, nn_hdim,):
         self.nn_hdim = nn_hdim
         nn_input_dim = 1024
         nn_output_dim = 1
@@ -24,14 +41,18 @@ class NeuralNet:
         self.weights = [w1, w2]
         self.biases = [b1, b2]
 
+
     def back_propagtion(self, image, label):
 
+        # create input vector
         curr_input = image
         curr_input = np.ravel(curr_input).reshape((1, 1024))
 
         # Forward propagation
+        # Edges inputting into the hidden layer
         z1 = curr_input.dot(self.weights[0]) + self.biases[0]
         a1 = ReLU(z1)
+        # Edges outputting from the hidden layer, into the output layer
         z2 = a1.dot(self.weights[1]) + self.biases[1]
         prob_bp = sigmoid(z2)
 
@@ -66,3 +87,8 @@ class NeuralNet:
         mean_accuracy = calculate_accuracy_mean(accuracy, batch_size)
         return mean_loss, mean_accuracy
 
+
+if __name__ == '__main__':
+    net1 = NeuralNet(3)
+    trained_net1 = TrainingExperiment(net)
+    mpl.rc_plot(trained_net1.plot)
