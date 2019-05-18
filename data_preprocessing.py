@@ -20,5 +20,9 @@ class Data:
                 elif filename.startswith("pos"):
                     self.labels.append(1)  # todo: add exceptions
 
-    def get_instances(self):
-        return zip(self.training_pictures, self.labels)
+    def get_instances(self, indices=-1):
+        if indices == -1:
+            return zip(self.training_pictures, self.labels)
+        else:
+            return zip([self.training_pictures[i] for i in [indices]],
+                       [self.labels[i] for i in [indices]])
