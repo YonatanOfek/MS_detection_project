@@ -28,3 +28,6 @@ class Data:
                 indices.T]
             batch_labels = [self.labels[i] for i in indices.T]
             return zip(batch_pictures, batch_labels)
+    
+    def get_middle(self):
+        pass

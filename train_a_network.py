@@ -12,7 +12,7 @@ VALIDATION_DATASET_DIRECTORY = 'C://Users/User/PycharmProjects/MSDetectionP' \
 
 class TrainingSession:
 
-    def __init__(self, untrained_net=NeuralNet(1024),training_data=Data(
+    def __init__(self, untrained_net=NeuralNet(1024), training_data=Data(
                 TRAINING_DATASET_DIRECTORY), validation_data=Data(
                 VALIDATION_DATASET_DIRECTORY)):
         self.NN = untrained_net
@@ -28,17 +28,19 @@ class TrainingSession:
         self.accuracy = numpy.zeros(number_of_epochs)
         
         for i in range(number_of_epochs-1):
+            temp_weights = numpy.asarray(self.NN.weights[0])
             t = time.time()
             self.m_loss[i], self.accuracy[i] = self.epoch(size_of_batches,
                                                           learning_rate)
             elapsed = time.time() - t
             print(i)
             print(elapsed)
+            print(sum(numpy.asarray(self.NN.weights[0]) - temp_weights))
         return self.NN
     
     def epoch(self, size_of_batches, learning_rate):
         batches = self.get_batches(size_of_batches)
-        for i in range(batches.shape[1]-1):
+        for i in range(batches.shape[1]):
 
             instances = self.training_data.get_instances(batches[:, i])
             mean_loss, accuracy = self.NN.update_batch(instances, learning_rate
@@ -83,7 +85,7 @@ if __name__ == '__main__':
     training_session = TrainingSession()
     our_pride_and_joy = training_session.train_network_and_keep_metrics(10,
                                                                         64,
-                                                                        0.7)
+                                                                        0.1)
     # there are
     # 512 instances in the dataset
     training_session.plot_metrics()
