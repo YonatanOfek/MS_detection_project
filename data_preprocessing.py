@@ -1,5 +1,4 @@
 import numpy
-import matplotlib.pyplot as pyplot
 import cv2 as cv
 import os
 
@@ -21,8 +20,11 @@ class Data:
                     self.labels.append(1)  # todo: add exceptions
 
     def get_instances(self, indices=-1):
-        if indices == -1:
+        if indices.all == -1:
             return zip(self.training_pictures, self.labels)
         else:
-            return zip([self.training_pictures[i] for i in [indices]],
-                       [self.labels[i] for i in [indices]])
+            
+            batch_pictures = [self.training_pictures[i] for i in
+                indices.T]
+            batch_labels = [self.labels[i] for i in indices.T]
+            return zip(batch_pictures, batch_labels)
