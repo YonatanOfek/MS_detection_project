@@ -97,4 +97,3 @@ if __name__ == '__main__':
             "nn_hdim": 1024, 'activation_1': 'ReLU', 'activation_2':
                 'sigmoid' , 'IDs': (305749517,200687978)}
     make_pickle(dict, 'trained_dict')
-    

@@ -10,7 +10,7 @@ def make_pickle(dict, filename):
     with open(filename + '.pickle', 'wb') as handle:
         pickle.dump(dict, handle, protocol=pickle.HIGHEST_PROTOCOL)
 
-make_pickle(,'trained_dict')
+
 
 
 
