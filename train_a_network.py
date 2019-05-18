@@ -1,7 +1,6 @@
 import numpy
 import matplotlib.pyplot as pyplot
-import cv2 as cv
-import os
+import time
 from neural_net import NeuralNet
 from data_preprocessing import Data
 
@@ -24,24 +23,29 @@ class TrainingSession:
         self.accuracy = []
         
     def train_network_and_keep_metrics(self, number_of_epochs, size_of_batches,
-                                       plot_flag=1):
+                                       learning_rate):
         self.m_loss = numpy.zeros(number_of_epochs)
         self.accuracy = numpy.zeros(number_of_epochs)
         
         for i in range(number_of_epochs-1):
-            self.m_loss[i], self.accuracy[i] = self.epoch(size_of_batches)
-
+            t = time.time()
+            self.m_loss[i], self.accuracy[i] = self.epoch(size_of_batches,
+                                                          learning_rate)
+            elapsed = time.time() - t
+            print(i)
+            print(elapsed)
         return self.NN
     
-    def epoch(self, size_of_batches):
+    def epoch(self, size_of_batches, learning_rate):
         batches = self.get_batches(size_of_batches)
         for i in range(batches.shape[1]-1):
-            instances = self.training_data.get_instances(batches[:,i]) #??
-            mean_loss, accuracy = self.NN.update_batch(instances,
-                                                         1, size_of_batches)
+
+            instances = self.training_data.get_instances(batches[:, i])
+            mean_loss, accuracy = self.NN.update_batch(instances, learning_rate
+                                                       , size_of_batches)
         return mean_loss, accuracy
         
-    def get_batches(self,size_of_batches):  # returns matrix whose columns are
+    def get_batches(self, size_of_batches):  # returns matrix whose columns are
                                             # lists of  indices for the batches
                                             # todo: replace assertion with
                                             #  automatic removal of
@@ -55,22 +59,31 @@ class TrainingSession:
         numpy.random.seed(0)
         batches = numpy.random.permutation(size_of_dataset)
         batches = numpy.ravel(batches).reshape((
-            size_of_batches, size_of_dataset/size_of_batches))
+            size_of_batches, int(size_of_dataset/size_of_batches)))
         return batches
     
     def plot_metrics(self):
         
-        pyplot.figure()
-        pyplot.plot(accuracy)
-        pyplot.figure()
-        pyplot.plot(m_loss)
-        print(m_loss)
+        pyplot.subplot(2, 1, 1)
+        pyplot.plot(self.accuracy)
+        pyplot.title('Accuracy vs epochs')
+        
+        pyplot.subplot(2, 1, 2)
+        pyplot.plot(self.m_loss)
+        pyplot.title('Loss vs epochs')
+        
+        pyplot.show()
+        
+    def validate_network(self):
         pass
 
 
 if __name__ == '__main__':
 
     training_session = TrainingSession()
-    our_pride_and_joy = training_session.train_network(30, 64) # there are
+    our_pride_and_joy = training_session.train_network_and_keep_metrics(10,
+                                                                        64,
+                                                                        0.7)
+    # there are
     # 512 instances in the dataset
-    
+    training_session.plot_metrics()
