@@ -95,5 +95,5 @@ if __name__ == '__main__':
             "biases": (our_pride_and_joy.biases[0],
                        our_pride_and_joy.biases[1]),
             "nn_hdim": 1024, 'activation_1': 'ReLU', 'activation_2':
-                'sigmoid' , 'IDs': (305749517,200687978)}
+                'sigmoid', 'IDs': (305749517,200687978)}
     make_pickle(dict, 'trained_dict')
