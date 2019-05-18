@@ -3,6 +3,7 @@ import matplotlib.pyplot as pyplot
 import time
 from neural_net import NeuralNet
 from data_preprocessing import Data
+from make_pickle_file import make_pickle
 
 TRAINING_DATASET_DIRECTORY = 'C://Users/User/PycharmProjects/MSDetectionPro' \
                              'ject/MS_Dataset_2019/training'
@@ -89,3 +90,11 @@ if __name__ == '__main__':
     # there are
     # 512 instances in the dataset
     training_session.plot_metrics()
+    dict = {"weights": (our_pride_and_joy.weights[0],
+                        our_pride_and_joy.weights[1]),
+            "biases": (our_pride_and_joy.biases[0],
+                       our_pride_and_joy.biases[1]),
+            "nn_hdim": 1024, 'activation_1': 'ReLU', 'activation_2':
+                'sigmoid' , 'IDs': (305749517,200687978)}
+    make_pickle(dict, 'trained_dict')
+    
