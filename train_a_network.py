@@ -29,14 +29,21 @@ class TrainingSession:
         self.accuracy = numpy.zeros(number_of_epochs)
         
         for i in range(number_of_epochs-1):
-            temp_weights = numpy.asarray(self.NN.weights[0])
+            
             t = time.time()
+            print('Weight 0 before training:')
+            print(self.NN.weights[0])
+            # print('Weight 1 before training:')
+            # print(self.NN.weights[1])
             self.m_loss[i], self.accuracy[i] = self.epoch(size_of_batches,
                                                           learning_rate)
-            elapsed = time.time() - t
+            # elapsed = time.time() - t
             print(i)
-            print(elapsed)
-            print(sum(numpy.asarray(self.NN.weights[0]) - temp_weights))
+            # print(elapsed)
+            print('Weight 0 after training:')
+            print(self.NN.weights[0])
+            # print('Weight 1 after training:')
+            # print(self.NN.weights[1])
         return self.NN
     
     def epoch(self, size_of_batches, learning_rate):
@@ -84,9 +91,9 @@ class TrainingSession:
 if __name__ == '__main__':
 
     training_session = TrainingSession()
-    our_pride_and_joy = training_session.train_network_and_keep_metrics(10,
-                                                                        64,
-                                                                        0.1)
+    our_pride_and_joy = training_session.train_network_and_keep_metrics(100,
+                                                                        32,
+                                                                        0.001)
     # there are
     # 512 instances in the dataset
     training_session.plot_metrics()
@@ -95,5 +102,5 @@ if __name__ == '__main__':
             "biases": (our_pride_and_joy.biases[0],
                        our_pride_and_joy.biases[1]),
             "nn_hdim": 1024, 'activation_1': 'ReLU', 'activation_2':
-                'sigmoid', 'IDs': (305749517,200687978)}
+                'sigmoid', 'IDs': (305749517, 200687978)}
     make_pickle(dict, 'trained_dict')
