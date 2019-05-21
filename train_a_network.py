@@ -37,9 +37,9 @@ class TrainingSession:
             # print(self.NN.weights[1])
             self.m_loss[i], self.accuracy[i] = self.epoch(size_of_batches,
                                                           learning_rate)
-            # elapsed = time.time() - t
+            elapsed = time.time() - t
             print(i)
-            # print(elapsed)
+            print(elapsed)
             print('Weight 0 after training:')
             print(self.NN.weights[0])
             # print('Weight 1 after training:')
