@@ -1,110 +1,1 @@
-import numpy as np
-import matplotlib as mpl
-import cv2 as cv
-
-
-def ReLU(x):
-    return abs(x)*(x > 0)
-
-
-def sigmoid(x):
-    return 1.0 / (1.0 + np.exp(-x))
-
-
-def sigmoid_derivative(x):
-    return 1.0 / (2.0 + np.exp(-2.0 * x) + 2.0 * np.exp(-x))  # ??
-
-
-def relu_derivative(x):
-    return 1.0 * (x > 0)  # ??
-
-
-def calculate_accuracy(prob, label):
-    return prob - label  # ??
-
-
-def calculate_accuracy_mean(accuracy, batch_size):
-    return accuracy / batch_size  # ??
-
-
-def calculate_loss(loss, batch_size):
-    return loss / batch_size  # ??
-
-
-class TrainingExperiment():
-
-    # def __init__(self, net: NeuralNet, number_of_epochs, size_of_batches, input_vector, label_vector):
-    #     self.NN = net
-    #     pass
-    # def epoch(self):
-    #
-
-class NeuralNet:
-
-    def __init__(self, nn_hdim,):
-        self.nn_hdim = nn_hdim
-        nn_input_dim = 1024
-        nn_output_dim = 1
-        np.random.seed(0)
-        w1 = np.random.randn(nn_input_dim, nn_hdim) / np.sqrt(nn_input_dim)
-        b1 = np.zeros((1, nn_hdim))
-        w2 = np.random.randn(nn_hdim, nn_output_dim) / np.sqrt(nn_hdim)
-        b2 = np.zeros((1, nn_output_dim))
-        self.weights = [w1, w2]
-        self.biases = [b1, b2]
-
-    def back_propagation(self, image, label):
-
-        # create input vector
-        curr_input = image
-        curr_input = np.ravel(curr_input).reshape((1, 1024))
-
-        # Forward propagation
-        # Edges inputting into the hidden layer
-        z1 = curr_input.dot(self.weights[0]) + self.biases[0]
-        a1 = ReLU(z1)
-        # Edges outputting from the hidden layer, into the output layer
-        z2 = a1.dot(self.weights[1]) + self.biases[1]
-        prob_bp = sigmoid(z2)
-
-        # Back propagation
-        delta3 = (prob_bp[0][0] - label) * sigmoid_derivative(z2)
-        delta2 = delta3.dot(self.weights[1].T) * relu_derivative(z1)
-
-        dw2 = a1.T.dot(delta3)
-        dw1 = curr_input.T.dot(delta2)
-        d_nabla_b = [delta2, delta3]
-        d_nabla_w = [dw1, dw2]
-
-        return d_nabla_b, d_nabla_w, prob_bp
-
-    def update_batch(self, batch, lr, batch_size):
-        nabla_w = [np.zeros(w.shape) for w in self.weights]
-        nabla_b = [np.zeros(b.shape) for b in self.biases]
-        loss = []
-        accuracy = []
-
-        for image, label in batch:
-            db, dw, prob = self.back_propagation(image, label)
-            nabla_w = [nw + dnw for nw, dnw in zip(nabla_w, dw)]
-            nabla_b = [nb + dnb for nb, dnb in zip(nabla_b, db)]
-            loss.append((label - prob) ** 2 / 2)
-            accuracy.append(calculate_accuracy(prob[0][0], label))
-
-        # update rule
-        self.weights = [w - (lr / batch_size) * dw for w, dw in zip(self.weights, nabla_w)]
-        self.biases = [b - (lr / batch_size) * db for b, db in zip(self.biases, nabla_b)]
-        mean_loss = calculate_loss(loss, batch_size)
-        mean_accuracy = calculate_accuracy_mean(accuracy, batch_size)
-        return mean_loss, mean_accuracy
-
-
-
-if __name__ == '__main__':
-    net1 = NeuralNet(1)
-    training_pictures = # cv.imread(raw_img, 0)
-    for i in range(30):
-        mean_loss(i), mean_accuracy(i)= net1.update_batch(training_pictures, 1, len(training_pictures))
-
-    mpl.rc_plot(mean_accuracy)
-    mpl.rc_plot(mean_loss)
+import numpyimport matplotlib.pyplot as pyplotimport cv2 as cvimport osdef ReLU(x):  # Todo: make a wrapper for the activation functions    return abs(x)*(x > 0)def tanh(x):    return (numpy.tanh(x))def sigmoid(x):    return 1.0 / (1.0 + numpy.exp(-x))def sigmoid_derivative(x):    return 1.0 / (2.0 + numpy.exp(-2.0 * x) + 2.0 * numpy.exp(-x))def tanh_derivative(x):    return 1.0 - (tanh(x) ** 2)def ReLU_derivative(x):    return 1.0 * (x > 0)def calculate_correctness(prob, label):    return 1.0 - abs(label - round(prob[0][0]))def calculate_accuracy(accuracy_vector, batch_size):    return numpy.sum(accuracy_vector) / batch_sizedef calculate_mean_loss(loss, batch_size):    return numpy.sum(loss) / batch_sizeclass NeuralNet:    def __init__(self, nn_hidden_layer_dimension, nn_input_dim=1024):        nn_output_dim = 1        numpy.random.seed(0)        w1 = numpy.random.randn(nn_input_dim, nn_hidden_layer_dimension) / numpy.sqrt(nn_input_dim)        b1 = numpy.zeros((1, nn_hidden_layer_dimension))        w2 = numpy.random.randn(nn_hidden_layer_dimension, nn_output_dim) / numpy.sqrt(nn_hidden_layer_dimension)        b2 = numpy.zeros((1, nn_output_dim))        self.weights = [w1, w2]        self.biases = [b1, b2]        def log_weights_during_back_propogation(self):        print('a1')        print(numpy.argwhere(numpy.isnan(a1)))        print('weights1')        print(numpy.argwhere(numpy.isnan(self.weights[1])))        print('weights0')        print(numpy.argwhere(numpy.isnan(self.weights[0])))            def back_propagation(self, image, label):        # create input vector        curr_input = image        curr_input = numpy.ravel(curr_input).reshape((1, 1024))        # Forward propagation        # Edges inputting into the hidden layer        z1 = curr_input.dot(self.weights[0]) + self.biases[0]        helper = map(tanh, z1)        a1 = numpy.array(list(helper))        # self.log_weights_during_back_propogation()                # Edges outputting from the hidden layer, into the output layer        z2 = a1.dot(self.weights[1]) + self.biases[1]        prob_bp = numpy.array(list(map(tanh, z2)))  # this is a2 # todo: this is so ugly!        # Back propagation        delta2 = (prob_bp[0][0] - label) * numpy.array(list(map(tanh_derivative, z2)))        delta1 = delta2.dot(self.weights[1].T) * numpy.array(list(map(            tanh_derivative, z1)))        dw2 = a1.T.dot(delta2)        dw1 = curr_input.T.dot(delta1)        d_nabla_b = [delta1, delta2]        d_nabla_w = [dw1, dw2]        return d_nabla_b, d_nabla_w, prob_bp    def update_batch(self, batch, lr, batch_size):        nabla_w = [numpy.zeros(w.shape) for w in self.weights]        nabla_b = [numpy.zeros(b.shape) for b in self.biases]        loss_vector = []        accuracy_vector = []        for image, label in batch:            db, dw, prob = self.back_propagation(image, label)            nabla_w = [nw + dnw for nw, dnw in zip(nabla_w, dw)]            nabla_b = [nb + dnb for nb, dnb in zip(nabla_b, db)]            loss_vector.append(((label - prob) ** 2) / 2)            accuracy_vector.append(calculate_correctness(prob, label))        # update rule        self.weights = [w - (lr / batch_size) * dw for w, dw in zip(self.weights, nabla_w)]        self.biases = [b - (lr / batch_size) * db for b, db in zip(self.biases, nabla_b)]        batch_mean_loss = calculate_mean_loss(loss_vector, batch_size)        batch_accuracy = calculate_accuracy(accuracy_vector, batch_size)        return batch_mean_loss, batch_accuracy
